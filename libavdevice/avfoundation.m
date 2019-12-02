@@ -38,7 +38,7 @@
 #include "libavutil/imgutils.h"
 #include "avdevice.h"
 
-#define QUEUE_SIZE 4
+#define QUEUE_SIZE 400
 
 static const int avf_time_base = 1000000;
 
