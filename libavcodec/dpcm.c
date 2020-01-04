@@ -162,7 +162,7 @@ static av_cold int dpcm_decode_init(AVCodecContext *avctx)
 
     case AV_CODEC_ID_SQS2_DPCM:
         for (i = -128; i < 128; i++) {
-            int16_t square = i * i * 2;
+            uint8_t square = i * i * 2;
             s->array[i+128] = i < 0 ? -square: square;
         }
         break;
@@ -237,6 +237,7 @@ static int dpcm_decode_frame(AVCodecContext *avctx, void *data,
         break;
     case AV_CODEC_ID_GREMLIN_DPCM:
     case AV_CODEC_ID_SDX2_DPCM:
+    case AV_CODEC_ID_SQS2_DPCM:
         out = buf_size;
         break;
     }
@@ -359,6 +360,19 @@ static int dpcm_decode_frame(AVCodecContext *avctx, void *data,
         break;
 
     case AV_CODEC_ID_SDX2_DPCM:
+        while (output_samples < samples_end) {
+            int8_t n = bytestream2_get_byteu(&gb);
+
+            if (!(n & 1))
+                s->sample[ch] = 0;
+            s->sample[ch] += s->array[n + 128];
+            s->sample[ch]  = av_clip_int16(s->sample[ch]);
+            *output_samples++ = s->sample[ch];
+            ch ^= stereo;
+        }
+        break;
+
+    case AV_CODEC_ID_SQS2_DPCM:
         while (output_samples < samples_end) {
             int8_t n = bytestream2_get_byteu(&gb);
 

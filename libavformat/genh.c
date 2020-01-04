@@ -173,7 +173,7 @@ static int genh_read_packet(AVFormatContext *s, AVPacket *pkt)
             }
         }
         ret = 0;
-    } else if (par->codec_id == AV_CODEC_ID_SDX2_DPCM) {
+    } else if (par->codec_id == AV_CODEC_ID_SDX2_DPCM || par->codec_id == AV_CODEC_ID_SQS2_DPCM) {
         ret = av_get_packet(s->pb, pkt, par->block_align * 1024);
 
     } else {
