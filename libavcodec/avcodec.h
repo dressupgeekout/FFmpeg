@@ -558,6 +558,7 @@ enum AVCodecID {
     AV_CODEC_ID_SOL_DPCM,
 
     AV_CODEC_ID_SDX2_DPCM = 0x14800,
+    AV_CODEC_ID_SQS2_DPCM,
     AV_CODEC_ID_GREMLIN_DPCM,
 
     /* audio codecs */

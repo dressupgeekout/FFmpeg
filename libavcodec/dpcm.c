@@ -160,6 +160,13 @@ static av_cold int dpcm_decode_init(AVCodecContext *avctx)
         }
         break;
 
+    case AV_CODEC_ID_SQS2_DPCM:
+        for (i = -128; i < 128; i++) {
+            int16_t square = i * i * 2;
+            s->array[i+128] = i < 0 ? -square: square;
+        }
+        break;
+
     case AV_CODEC_ID_GREMLIN_DPCM: {
         int delta = 0;
         int code = 64;
@@ -186,6 +193,9 @@ static av_cold int dpcm_decode_init(AVCodecContext *avctx)
         avctx->sample_fmt = AV_SAMPLE_FMT_U8;
     else
         avctx->sample_fmt = AV_SAMPLE_FMT_S16;
+
+    if (avctx->codec_id == AV_CODEC_ID_SQS2_DPCM)
+		    avctx->sample_fmt = AV_SAMPLE_FMT_U8;
 
     return 0;
 }
@@ -395,5 +405,6 @@ DPCM_DECODER(AV_CODEC_ID_GREMLIN_DPCM,   gremlin_dpcm,   "DPCM Gremlin");
 DPCM_DECODER(AV_CODEC_ID_INTERPLAY_DPCM, interplay_dpcm, "DPCM Interplay");
 DPCM_DECODER(AV_CODEC_ID_ROQ_DPCM,       roq_dpcm,       "DPCM id RoQ");
 DPCM_DECODER(AV_CODEC_ID_SDX2_DPCM,      sdx2_dpcm,      "DPCM Squareroot-Delta-Exact");
+DPCM_DECODER(AV_CODEC_ID_SQS2_DPCM,      sqs2_dpcm,      "DPCM Squareroot-Delta-Exact 3DO");
 DPCM_DECODER(AV_CODEC_ID_SOL_DPCM,       sol_dpcm,       "DPCM Sol");
 DPCM_DECODER(AV_CODEC_ID_XAN_DPCM,       xan_dpcm,       "DPCM Xan");

@@ -272,6 +272,7 @@ extern AVCodec ff_sanm_decoder;
 extern AVCodec ff_scpr_decoder;
 extern AVCodec ff_screenpresso_decoder;
 extern AVCodec ff_sdx2_dpcm_decoder;
+extern AVCodec ff_sqs2_dpcm_decoder;
 extern AVCodec ff_sgi_encoder;
 extern AVCodec ff_sgi_decoder;
 extern AVCodec ff_sgirle_decoder;

@@ -2346,6 +2346,13 @@ static const AVCodecDescriptor codec_descriptors[] = {
         .props     = AV_CODEC_PROP_LOSSY,
     },
     {
+        .id        = AV_CODEC_ID_SQS2_DPCM,
+        .type      = AVMEDIA_TYPE_AUDIO,
+        .name      = "sqs2_dpcm",
+        .long_name = NULL_IF_CONFIG_SMALL("DPCM Squareroot-Delta-Exact 3DO"),
+        .props     = AV_CODEC_PROP_LOSSY,
+    },
+    {
         .id        = AV_CODEC_ID_GREMLIN_DPCM,
         .type      = AVMEDIA_TYPE_AUDIO,
         .name      = "gremlin_dpcm",
