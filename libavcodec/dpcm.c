@@ -162,7 +162,7 @@ static av_cold int dpcm_decode_init(AVCodecContext *avctx)
 
     case AV_CODEC_ID_SQS2_DPCM:
         for (i = -128; i < 128; i++) {
-            uint8_t square = i * i * 2;
+            int16_t square = i * i * 2;
             s->array[i+128] = i < 0 ? -square: square;
         }
         break;
@@ -193,9 +193,6 @@ static av_cold int dpcm_decode_init(AVCodecContext *avctx)
         avctx->sample_fmt = AV_SAMPLE_FMT_U8;
     else
         avctx->sample_fmt = AV_SAMPLE_FMT_S16;
-
-    if (avctx->codec_id == AV_CODEC_ID_SQS2_DPCM)
-		    avctx->sample_fmt = AV_SAMPLE_FMT_U8;
 
     return 0;
 }
