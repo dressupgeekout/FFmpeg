@@ -162,8 +162,8 @@ static av_cold int dpcm_decode_init(AVCodecContext *avctx)
 
     case AV_CODEC_ID_SQS2_DPCM:
         for (i = -128; i < 128; i++) {
-            int16_t square = i * i;
-            s->array[i+128] = i < 0 ? -square : square;
+            int16_t square = i * i * 2;
+            s->array[i+128] = i < 0 ? -square: square;
         }
         break;
 
@@ -372,12 +372,10 @@ static int dpcm_decode_frame(AVCodecContext *avctx, void *data,
     case AV_CODEC_ID_SQS2_DPCM:
         while (output_samples < samples_end) {
             int8_t n = bytestream2_get_byteu(&gb);
-						fprintf(stderr, "%d -> %d\n", n, s->array[n+128]);
-						fflush(stderr);
 
             if (!(n & 1))
                 s->sample[ch] = 0;
-            s->sample[ch] += s->array[n+128];
+            s->sample[ch] = s->array[n+128];
             s->sample[ch] = av_clip_int16(s->sample[ch]);
             *output_samples++ = s->sample[ch];
             ch ^= stereo;
