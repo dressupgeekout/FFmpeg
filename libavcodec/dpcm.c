@@ -175,6 +175,13 @@ static av_cold int dpcm_decode_init(AVCodecContext *avctx)
         }
         break;
 
+    case AV_CODEC_ID_SQS2_DPCM:
+        for (i = -128; i < 128; i++) {
+            int16_t square = i * i * 2;
+            s->array[i+128] = i < 0 ? -square: square;
+        }
+        break;
+
     case AV_CODEC_ID_GREMLIN_DPCM: {
         int delta = 0;
         int code = 64;
@@ -243,6 +250,7 @@ static int dpcm_decode_frame(AVCodecContext *avctx, void *data,
     case AV_CODEC_ID_DERF_DPCM:
     case AV_CODEC_ID_GREMLIN_DPCM:
     case AV_CODEC_ID_SDX2_DPCM:
+    case AV_CODEC_ID_SQS2_DPCM:
         out = buf_size;
         break;
     }
@@ -376,6 +384,19 @@ static int dpcm_decode_frame(AVCodecContext *avctx, void *data,
         }
         break;
 
+    case AV_CODEC_ID_SQS2_DPCM:
+        while (output_samples < samples_end) {
+            int8_t n = bytestream2_get_byteu(&gb);
+
+            if (!(n & 1))
+                s->sample[ch] = 0;
+            s->sample[ch] += s->array[n + 128];
+            s->sample[ch]  = av_clip_int16(s->sample[ch]);
+            *output_samples++ = s->sample[ch];
+            ch ^= stereo;
+        }
+        break;
+
     case AV_CODEC_ID_GREMLIN_DPCM: {
         int idx = 0;
 
@@ -426,5 +447,6 @@ DPCM_DECODER(AV_CODEC_ID_GREMLIN_DPCM,   gremlin_dpcm,   "DPCM Gremlin");
 DPCM_DECODER(AV_CODEC_ID_INTERPLAY_DPCM, interplay_dpcm, "DPCM Interplay");
 DPCM_DECODER(AV_CODEC_ID_ROQ_DPCM,       roq_dpcm,       "DPCM id RoQ");
 DPCM_DECODER(AV_CODEC_ID_SDX2_DPCM,      sdx2_dpcm,      "DPCM Squareroot-Delta-Exact");
+DPCM_DECODER(AV_CODEC_ID_SQS2_DPCM,      sqs2_dpcm,      "DPCM 3DO SquashSound");
 DPCM_DECODER(AV_CODEC_ID_SOL_DPCM,       sol_dpcm,       "DPCM Sol");
 DPCM_DECODER(AV_CODEC_ID_XAN_DPCM,       xan_dpcm,       "DPCM Xan");

@@ -98,6 +98,10 @@ static int threedostr_read_header(AVFormatContext *s)
         st->codecpar->codec_id    = AV_CODEC_ID_SDX2_DPCM;
         st->codecpar->block_align = 1 * st->codecpar->channels;
         break;
+    case MKTAG('S','Q','S','2'):
+        st->codecpar->codec_id    = AV_CODEC_ID_SQS2_DPCM;
+        st->codecpar->block_align = 1 * st->codecpar->channels;
+        break;
     default:
         avpriv_request_sample(s, "codec %X", codec);
         return AVERROR_PATCHWELCOME;

@@ -578,6 +578,7 @@ extern AVCodec ff_interplay_dpcm_decoder;
 extern AVCodec ff_roq_dpcm_encoder;
 extern AVCodec ff_roq_dpcm_decoder;
 extern AVCodec ff_sdx2_dpcm_decoder;
+extern AVCodec ff_sqs2_dpcm_decoder;
 extern AVCodec ff_sol_dpcm_decoder;
 extern AVCodec ff_xan_dpcm_decoder;
 
