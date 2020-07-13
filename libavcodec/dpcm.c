@@ -387,6 +387,7 @@ static int dpcm_decode_frame(AVCodecContext *avctx, void *data,
     case AV_CODEC_ID_SQS2_DPCM:
         while (output_samples < samples_end) {
             int8_t n = bytestream2_get_byteu(&gb);
+						//fprintf(stderr, "CHARLOTTE\t%d\n", n);
 
             if (!(n & 1))
                 s->sample[ch] = 0;
